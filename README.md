@@ -54,14 +54,29 @@ Between them runs a governance loop so the model never fires raw output at a cus
 | File | What it is |
 |------|-----------|
 | [`SKILL.md`](SKILL.md) | The installable Claude Code skill — teaches the pattern and walks you through adopting it |
+| [`scaffold/`](scaffold/) | A **runnable** reference implementation — `python run_demo.py`, no API key, no WhatsApp pairing needed |
 | [`reference/topology.md`](reference/topology.md) | Why split the brain from the transport (full rationale) |
 | [`reference/governance-loop.md`](reference/governance-loop.md) | The 7-stage loop, stage by stage, with failure modes |
-| [`reference/adapt.md`](reference/adapt.md) | Stub interfaces — wiring the pattern onto your transport |
+| [`reference/adapt.md`](reference/adapt.md) | Interfaces — wiring the pattern onto your transport |
 | [`docs/index.html`](docs/index.html) | The visual one-pager (also hosted via GitHub Pages) |
 
-This is a **documentation skill** — it installs *understanding*, not a running bot. It does
-not open a WhatsApp socket or ship a transport. You bring the transport; this teaches the
-brain + governance layer that sits on top.
+The **skill + reference** install *understanding* — they don't open a WhatsApp socket or ship a
+transport. The **[`scaffold/`](scaffold/)** is the runnable companion: a small brain +
+governance loop you can run end-to-end against a mock transport in one command, then swap the
+mock for a real linked-device client. You bring the transport; this teaches (and demonstrates)
+the brain + governance layer on top.
+
+## Try it in one command
+
+```bash
+git clone https://github.com/pauloovidio-a11y/wa-brain-pattern
+cd wa-brain-pattern/scaffold
+python run_demo.py
+```
+
+No API key, no WhatsApp login — a mock brain drafts replies and a mock transport enforces the
+token gate, so you watch the full governance loop route messages into lanes and refuse a forged
+send. See [`scaffold/README.md`](scaffold/README.md).
 
 ## Install (Claude Code)
 

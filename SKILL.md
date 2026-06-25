@@ -12,11 +12,14 @@ description: >-
 
 # wa-brain-pattern — autonomous WhatsApp on Claude Code
 
-This is a **documentation skill**. It does not install a bot or open a socket. It teaches
-Claude Code a *topology* — and then helps the user adapt that topology onto whatever
-WhatsApp transport they already use.
+This is primarily a **documentation skill**: it teaches Claude Code a *topology* and helps the
+user adapt it onto whatever WhatsApp transport they already use. It does not install a bot or
+open a socket. A **runnable reference scaffold** ships alongside it (`scaffold/`) so the user can
+see the pattern work end-to-end before building.
 
-Read this whole file before advising. The companion deep-dives live in `reference/`.
+Read this whole file before advising. The companion deep-dives live in `reference/`; the working
+implementation lives in `scaffold/` (run it with `python scaffold/run_demo.py` — no API key, no
+WhatsApp pairing).
 
 ---
 
@@ -114,9 +117,9 @@ with the user, in order:
    - outbound: `{to, text, draft_id, send_token}`  ← note the token (stage ⑥)
 
 4. **Stand up the brain layer** as a Claude Code process that consumes inbound, runs
-   context assembly, drafts, and writes to shadow. See the stub interfaces in
-   `reference/adapt.md` — these are *signatures and responsibilities*, not runnable code.
-   The user fills them for their domain.
+   context assembly, drafts, and writes to shadow. Start from the runnable `scaffold/`
+   (a working brain + loop over a mock transport) and/or the interfaces in
+   `reference/adapt.md`. The user adapts these for their domain.
 
 5. **Wire the three guards.** Shadow (a holding store), an approval bridge (Telegram DM,
    a CLI, a web button — operator's choice), and a one-shot outbound token the transport
@@ -139,7 +142,8 @@ with the user, in order:
 - **Don't rebuild the wire.** Transport is solved and commoditized. Build the brain +
   governance loop; that is the differentiated work.
 - **Keep the outbound token single-use and draft-bound.** It is what makes "approved" mean
-  *this exact text to this exact person, once*.
+  *this exact text to this exact person, once*. The scaffold's `brain/tokens.py` shows the
+  verify-and-burn primitive; `transport/mock.py` shows the transport refusing a tokenless send.
 
 ---
 

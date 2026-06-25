@@ -1,0 +1,14 @@
+{
+  "+15550000001": {
+    "name": "Dana",
+    "relationship": "existing supplier",
+    "history": ["confirmed last shipment 2 weeks ago"],
+    "facts": {"account": "wholesale", "terms": "net-30"}
+  },
+  "+15550000002": {
+    "name": "Marcus",
+    "relationship": "active client",
+    "history": ["booked a consult last month"],
+    "facts": {"plan": "retainer"}
+  }
+}

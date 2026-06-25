@@ -1,9 +1,13 @@
 # Adapt — wiring the pattern onto your transport
 
-This is a **documentation skill**, so what follows is *interfaces and responsibilities*, not
-runnable code. The shapes are deliberately language-agnostic — fill them in whatever stack
-your transport already uses. The goal is to make the seam and the guards explicit so you
-don't accidentally collapse the pattern while building.
+What follows is *interfaces and responsibilities* — language-agnostic shapes you fill in
+whatever stack your transport already uses. The goal is to make the seam and the guards
+explicit so you don't accidentally collapse the pattern while building.
+
+> **Prefer to read working code?** [`../scaffold/`](../scaffold/) is a runnable Python
+> implementation of everything below — `python scaffold/run_demo.py` (no API key, no WhatsApp
+> pairing) shows the loop routing messages into lanes and the transport refusing a tokenless
+> send. The interfaces here map 1:1 to the files in `scaffold/brain/` and `scaffold/transport/`.
 
 ---
 

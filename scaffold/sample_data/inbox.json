@@ -1,0 +1,6 @@
+[
+  {"sender": "+15550000001", "text": "Hey, can you confirm you got my note about Thursday?", "thread_id": "t1", "timestamp": "2026-06-25T13:00:00Z"},
+  {"sender": "+15559999999", "text": "hi", "thread_id": "t2", "timestamp": "2026-06-25T13:01:00Z"},
+  {"sender": "+15550000002", "text": "Quick one — are you free Thursday afternoon to talk?", "thread_id": "t3", "timestamp": "2026-06-25T13:02:00Z"},
+  {"sender": "+15550000001", "text": "Also, can you send the invoice for last month's order?", "thread_id": "t4", "timestamp": "2026-06-25T13:03:00Z"}
+]
