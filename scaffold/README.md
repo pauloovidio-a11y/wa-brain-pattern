@@ -9,6 +9,7 @@ whole loop work before wiring anything real.
 cd scaffold
 python run_demo.py            # run the loop over a scripted inbox
 python run_demo.py --review   # then interactively approve/edit/veto the held drafts
+python run_health_demo.py     # v3: the transport health-check (heartbeat → auto-pause → alert)
 ```
 
 Optional — use the real Opus brain for drafting:
@@ -54,9 +55,22 @@ scaffold/
 │   └── loop.py            #   the loop, wired: inbound → … → token → send
 ├── transport/             # the TRANSPORT tier — carries bytes, stays dumb
 │   ├── base.py            #   the interface a real linked-device client implements
-│   └── mock.py            #   a scripted stand-in; verifies the token before "sending"
+│   ├── mock.py            #   a scripted stand-in; verifies the token before "sending"
+│   └── health.py          #   v3: per-number heartbeat circuit breaker (auto-pause + alert)
+├── run_health_demo.py     # v3 demo — heartbeat → degrade → auto-pause → operator alert → recover
 └── sample_data/           # scripted contacts + inbox for the demo
 ```
+
+## v3 — transport health-check
+
+`run_health_demo.py` adds the layer that decides whether the agent survives a real linked-device
+client: a **heartbeat per number** that auto-pauses the bot the moment its transport degrades
+(session dropped, token expired, number flagged) and alerts the operator *before* the client
+notices the silence. The brain and governance loop are unchanged — the health-check is a circuit
+breaker that sits in front of the wire. A degraded number holds **every** draft, even an
+auto-approve one (a confident reply into a dead session is worthless). Rationale + adapter notes:
+[`../reference/transport-health.md`](../reference/transport-health.md). Credit: scoped by Graeme C
+in the RoboNuggets thread.
 
 ## Swapping in a real transport
 

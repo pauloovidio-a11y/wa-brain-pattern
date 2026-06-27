@@ -57,6 +57,7 @@ Between them runs a governance loop so the model never fires raw output at a cus
 | [`scaffold/`](scaffold/) | A **runnable** reference implementation — `python run_demo.py`, no API key, no WhatsApp pairing needed |
 | [`reference/topology.md`](reference/topology.md) | Why split the brain from the transport (full rationale) |
 | [`reference/governance-loop.md`](reference/governance-loop.md) | The 7-stage loop, stage by stage, with failure modes |
+| [`reference/transport-health.md`](reference/transport-health.md) | **v3** — the heartbeat/auto-pause circuit breaker that keeps a dropped session from going silent on a client |
 | [`reference/adapt.md`](reference/adapt.md) | Interfaces — wiring the pattern onto your transport |
 | [`docs/index.html`](docs/index.html) | The visual one-pager (also hosted via GitHub Pages) |
 
@@ -77,6 +78,16 @@ python run_demo.py
 No API key, no WhatsApp login — a mock brain drafts replies and a mock transport enforces the
 token gate, so you watch the full governance loop route messages into lanes and refuse a forged
 send. See [`scaffold/README.md`](scaffold/README.md).
+
+```bash
+python run_health_demo.py   # v3 — the transport health-check
+```
+
+**v3** adds the layer that decides whether the agent survives production: a heartbeat per number
+that auto-pauses the bot the moment its transport degrades (session dropped, token expired, number
+flagged) and alerts the operator *before* the client notices the silence. The governance loop is
+perfect — but only if it's actually running. See
+[`reference/transport-health.md`](reference/transport-health.md).
 
 ## Install (Claude Code)
 
