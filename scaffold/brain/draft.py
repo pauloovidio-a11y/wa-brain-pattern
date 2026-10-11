@@ -18,7 +18,7 @@ except ImportError:
 from .seam import Draft
 
 # Default to Opus for the brain — it's what we run in production. Override with WA_BRAIN_MODEL
-# (e.g. claude-sonnet-4-6 / claude-haiku-4-5) to trade some quality for cost.
+# (e.g. claude-sonnet-4-6 / claude-haiku-5-5) to trade some quality for cost.
 MODEL = os.environ.get("WA_BRAIN_MODEL", "claude-opus-4-8")
 
 SYSTEM = (
@@ -76,6 +76,9 @@ def _llm_draft(inbound, ctx):
         system=SYSTEM,
         messages=[{"role": "user", "content": prompt}],
         output_config={"format": {"type": "json_schema", "schema": DRAFT_SCHEMA}},
+        # Haiku 5.x thinks by default and bills it against max_tokens; thinking off keeps
+        # the 1024 budget for the draft (fr-1791459971-1, 11/10/2026).
+        **({"thinking": {"type": "disabled"}} if MODEL.startswith("claude-haiku-5") else {}),
     )
     text = next(b.text for b in resp.content if b.type == "text")
     return json.loads(text)
