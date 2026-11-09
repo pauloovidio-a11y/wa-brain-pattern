@@ -70,15 +70,16 @@ def _llm_draft(inbound, ctx):
         f"INBOUND from {inbound.sender}:\n{inbound.text!r}\n\n"
         "Compose the reply."
     )
+    # Haiku 5.x thinks by default and bills it against max_tokens. Keep the thinking (thinking
+    # off cost judgment quality, measured 09/11/2026) at effort low, with room in the cap.
+    haiku5 = MODEL.startswith("claude-haiku-5")
     resp = client.messages.create(
         model=MODEL,
-        max_tokens=1024,
+        max_tokens=4024 if haiku5 else 1024,
         system=SYSTEM,
         messages=[{"role": "user", "content": prompt}],
-        output_config={"format": {"type": "json_schema", "schema": DRAFT_SCHEMA}},
-        # Haiku 5.x thinks by default and bills it against max_tokens; thinking off keeps
-        # the 1024 budget for the draft (fr-1791459971-1, 11/10/2026).
-        **({"thinking": {"type": "disabled"}} if MODEL.startswith("claude-haiku-5") else {}),
+        output_config={"format": {"type": "json_schema", "schema": DRAFT_SCHEMA},
+                       **({"effort": "low"} if haiku5 else {})},
     )
     text = next(b.text for b in resp.content if b.type == "text")
     return json.loads(text)
